@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2021-12-15T03:25:26. -->
+<!-- Written by QtCreator 4.11.0, 2025-08-15T19:35:27. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{0d010d2c-6604-4602-bb4d-cff6cc40be45}</value>
+  <value type="QByteArray">{0a10568b-3723-45e0-8916-14c1f9c8d4c8}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -54,7 +54,10 @@
  </data>
  <data>
   <variable>ProjectExplorer.Project.PluginSettings</variable>
-  <valuemap type="QVariantMap"/>
+  <valuemap type="QVariantMap">
+   <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>
+   <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
+  </valuemap>
  </data>
  <data>
   <variable>ProjectExplorer.Project.Target.0</variable>
@@ -73,7 +76,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">true</value>
       <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
-      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">true</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">false</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">false</value>
      </valuemap>
@@ -282,19 +285,19 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Executable"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/pavel/Work/PC/qclock/qclock.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/pavel/Work/PC/qclock/qclock.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/pavel/Work/PC/build-qclock-Desktop_Qt_5_14_0_GCC_64bit-Debug</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

@@ -29,9 +29,12 @@ private:
     int m_fontSize;
     bool m_fontBold;
 
+    QString getDayOfWeek(int day);
+
 private slots:
     void slot_timeout();
     void on_toolSettings_clicked();
+    void on_toolAlarms_clicked();
 
 protected:
     virtual void closeEvent(QCloseEvent *e) override;

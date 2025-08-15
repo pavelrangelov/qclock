@@ -4,7 +4,7 @@
 
 #define ORG_NAME    "Nifelheim"
 #define APP_NAME    "QClock"
-#define APP_VERS    "1.00"
+#define APP_VERS    "1.01"
 
 //-----------------------------------------------------------------------------
 int main(int argc, char *argv[]) {

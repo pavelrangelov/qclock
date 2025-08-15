@@ -7,6 +7,7 @@
 
 #include "maindialog.h"
 #include "ui_maindialog.h"
+#include "alarmsdialog.h"
 
 #define DIVFACTOR   4.5
 
@@ -27,6 +28,11 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     QFont font(m_fontName, m_fontSize);
     font.setBold(m_fontBold);
     ui->labelTime->setFont(font);
+
+    font.setFamily("Ubuntu");
+    font.setPointSize(40);
+    ui->labelDate->setFont(font);
+    ui->labelDayOfWeek->setFont(font);
 
     QString sDate = QDateTime::currentDateTime().toString("dd.MM.yyyy");
     ui->labelDate->setText(sDate);
@@ -65,6 +71,7 @@ void MainDialog::slot_timeout() {
         sDate = QDateTime::currentDateTime().toString("dd.MM.yyyy");
         ui->labelDate->setText(sDate);
         sTime = QDateTime::currentDateTime().toString("hh:mm");
+        ui->labelDayOfWeek->setText(getDayOfWeek(QDateTime::currentDateTime().date().dayOfWeek()));
         ui->labelTime->setText(sTime);
     } else {
         sTime = QDateTime::currentDateTime().toString("hh mm");
@@ -93,4 +100,27 @@ void MainDialog::on_toolSettings_clicked() {
         settings.setValue(STORE_FONTSIZE, m_fontSize);
         settings.setValue(STORE_FONTBOLD, m_fontBold);
     }
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::on_toolAlarms_clicked() {
+    AlarmsDialog dialog(this);
+    dialog.exec();
+}
+
+//-----------------------------------------------------------------------------
+QString MainDialog::getDayOfWeek(int day) {
+    QString result;
+
+    switch (day) {
+        case 1: result = QString("Monday"); break;
+        case 2: result = QString("Tuesday"); break;
+        case 3: result = QString("Wednesday"); break;
+        case 4: result = QString("Thursday"); break;
+        case 5: result = QString("Friday"); break;
+        case 6: result = QString("Saturday"); break;
+        case 7: result = QString("Sunday"); break;
+    }
+
+    return result;
 }
