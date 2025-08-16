@@ -83,7 +83,14 @@ void MainDialog::slot_timeout() {
 void MainDialog::on_toolSettings_clicked() {
     QSettings settings;
 
+    QFont font;
+    font.setFamily(m_fontName);
+    font.setPointSize(m_fontSize);
+    font.setBold(m_fontBold);
+
     QFontDialog dialog(this);
+    dialog.setOption(QFontDialog::MonospacedFonts, true);
+    dialog.setCurrentFont(font);
 
     if (dialog.exec() == QDialog::Accepted) {
         QFont font = dialog.selectedFont();
