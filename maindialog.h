@@ -3,6 +3,9 @@
 
 #include <QDialog>
 #include <QTimer>
+#include <QList>
+
+#include "alarmsdialog.h"
 
 #define STORE_GEOMETRY  "APP/Geometry"
 #define STORE_FONTNAME  "APP/FontName"
@@ -28,8 +31,10 @@ private:
     QString m_fontName;
     int m_fontSize;
     bool m_fontBold;
+    QList<alarm_t> m_Alarms;
 
     QString getDayOfWeek(int day);
+    void loadAlarms();
 
 private slots:
     void slot_timeout();

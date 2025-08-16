@@ -7,15 +7,29 @@ namespace Ui {
     class AlarmsDialog;
 }
 
+typedef struct alarm_struct {
+    int hour;
+    int minute;
+    bool snooze;
+    bool enable;
+} alarm_t;
+
 class AlarmsDialog : public QDialog {
     Q_OBJECT
 
     public:
         explicit AlarmsDialog(QWidget *parent = nullptr);
         ~AlarmsDialog();
+        void setAlarms(QList<alarm_t> &alarms);
 
     private:
         Ui::AlarmsDialog *ui;
+
+        void addNewRow();
+
+    public slots:
+        void on_toolNew_clicked();
+        void on_buttonBox_accepted();
 };
 
 #endif // ALARMSDIALOG_H

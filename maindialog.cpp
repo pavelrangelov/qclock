@@ -39,6 +39,8 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     QString sTime = QDateTime::currentDateTime().toString("hh:mm");
     ui->labelTime->setText(sTime);
 
+    loadAlarms();
+
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainDialog::slot_timeout);
     m_timer->start(500);
@@ -112,6 +114,7 @@ void MainDialog::on_toolSettings_clicked() {
 //-----------------------------------------------------------------------------
 void MainDialog::on_toolAlarms_clicked() {
     AlarmsDialog dialog(this);
+    dialog.setAlarms(m_Alarms);
     dialog.exec();
 }
 
@@ -130,4 +133,21 @@ QString MainDialog::getDayOfWeek(int day) {
     }
 
     return result;
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::loadAlarms() {
+    QSettings settings;
+
+    int n = settings.beginReadArray("Alarms");
+    for (int i=0; i<n; i++) {
+        alarm_t alarm;
+        settings.setArrayIndex(i);
+        alarm.hour = settings.value("hour", 0).toInt();
+        alarm.minute = settings.value("minute", 0).toInt();
+        alarm.snooze = settings.value("snooze", false).toBool();
+        alarm.enable = settings.value("enable", false).toBool();
+        m_Alarms.append(alarm);
+    }
+    settings.endArray();
 }
