@@ -35,11 +35,13 @@ private:
 
     QString getDayOfWeek(int day);
     void loadAlarms();
+    void processAlarms(QDateTime &currDateTime);
 
 private slots:
     void slot_timeout();
     void on_toolSettings_clicked();
     void on_toolAlarms_clicked();
+    void slot_updateAlarms();
 
 protected:
     virtual void closeEvent(QCloseEvent *e) override;

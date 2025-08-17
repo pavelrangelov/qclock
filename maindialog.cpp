@@ -70,11 +70,13 @@ void MainDialog::slot_timeout() {
     QString sDate, sTime;
 
     if (++m_counter & 0x1) {
-        sDate = QDateTime::currentDateTime().toString("dd.MM.yyyy");
+        QDateTime currDateTime = QDateTime::currentDateTime();
+        sDate = currDateTime.toString("dd.MM.yyyy");
         ui->labelDate->setText(sDate);
-        sTime = QDateTime::currentDateTime().toString("hh:mm");
-        ui->labelDayOfWeek->setText(getDayOfWeek(QDateTime::currentDateTime().date().dayOfWeek()));
+        sTime = currDateTime.toString("hh:mm");
+        ui->labelDayOfWeek->setText(getDayOfWeek(currDateTime.date().dayOfWeek()));
         ui->labelTime->setText(sTime);
+        processAlarms(currDateTime);
     } else {
         sTime = QDateTime::currentDateTime().toString("hh mm");
         ui->labelTime->setText(sTime);
@@ -115,7 +117,13 @@ void MainDialog::on_toolSettings_clicked() {
 void MainDialog::on_toolAlarms_clicked() {
     AlarmsDialog dialog(this);
     dialog.setAlarms(m_Alarms);
+    connect(&dialog, SIGNAL(alarmsUpdated()), this, SLOT(slot_updateAlarms()));
     dialog.exec();
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::slot_updateAlarms() {
+    loadAlarms();
 }
 
 //-----------------------------------------------------------------------------
@@ -139,6 +147,8 @@ QString MainDialog::getDayOfWeek(int day) {
 void MainDialog::loadAlarms() {
     QSettings settings;
 
+    m_Alarms.clear();
+
     int n = settings.beginReadArray("Alarms");
     for (int i=0; i<n; i++) {
         alarm_t alarm;
@@ -147,7 +157,24 @@ void MainDialog::loadAlarms() {
         alarm.minute = settings.value("minute", 0).toInt();
         alarm.snooze = settings.value("snooze", false).toBool();
         alarm.enable = settings.value("enable", false).toBool();
+        alarm.fired = false;
         m_Alarms.append(alarm);
     }
     settings.endArray();
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::processAlarms(QDateTime( &currDateTime)) {
+    for (alarm_t alarm: m_Alarms) {
+        if (currDateTime.time().hour() == alarm.hour &&
+            currDateTime.time().minute() == alarm.minute &&
+            currDateTime.time().second() == 0) {
+            if (!alarm.fired) {
+                alarm.fired = true;
+                qDebug() << "*** FIRE ***";
+            }
+        } else {
+            alarm.fired = false;
+        }
+    }
 }
