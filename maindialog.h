@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QTimer>
 #include <QList>
+#include <QSound>
 
 #include "alarmsdialog.h"
 
@@ -11,6 +12,7 @@
 #define STORE_FONTNAME  "APP/FontName"
 #define STORE_FONTSIZE  "APP/FontSize"
 #define STORE_FONTBOLD  "APP/FontBold"
+#define STORE_RINGTONE  "APP/RingTone"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainDialog; }
@@ -31,7 +33,9 @@ private:
     QString m_fontName;
     int m_fontSize;
     bool m_fontBold;
+    QString m_ringTone;
     QList<alarm_t> m_Alarms;
+    QSound *m_sound;
 
     QString getDayOfWeek(int day);
     void loadAlarms();
@@ -41,6 +45,7 @@ private slots:
     void slot_timeout();
     void on_toolSettings_clicked();
     void on_toolAlarms_clicked();
+    void on_toolMute_clicked();
     void slot_updateAlarms();
 
 protected:

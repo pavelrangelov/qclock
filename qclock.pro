@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 
 CONFIG += c++11
 
@@ -18,15 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     alarmsdialog.cpp \
     main.cpp \
-    maindialog.cpp
+    maindialog.cpp \
+    settingsdialog.cpp
 
 HEADERS += \
     alarmsdialog.h \
-    maindialog.h
+    maindialog.h \
+    settingsdialog.h
 
 FORMS += \
     alarmsdialog.ui \
-    maindialog.ui
+    maindialog.ui \
+    settingsdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

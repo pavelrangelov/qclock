@@ -4,9 +4,11 @@
 #include <QDebug>
 #include <QFontDialog>
 #include <QSettings>
+#include <QSound>
 
 #include "maindialog.h"
 #include "ui_maindialog.h"
+#include "settingsdialog.h"
 #include "alarmsdialog.h"
 
 #define DIVFACTOR   4.5
@@ -22,6 +24,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     m_fontName = settings.value(STORE_FONTNAME, "Ubuntu Mono").toString();
     m_fontSize = settings.value(STORE_FONTSIZE, 20).toInt();
     m_fontBold = settings.value(STORE_FONTBOLD, false).toBool();
+    m_ringTone = settings.value(STORE_RINGTONE, "").toString();
 
     restoreGeometry(settings.value(STORE_GEOMETRY).toByteArray());
 
@@ -40,6 +43,8 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     ui->labelTime->setText(sTime);
 
     loadAlarms();
+
+    m_sound = new QSound(m_ringTone);
 
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainDialog::slot_timeout);
@@ -85,31 +90,31 @@ void MainDialog::slot_timeout() {
 
 //-----------------------------------------------------------------------------
 void MainDialog::on_toolSettings_clicked() {
-    QSettings settings;
-
-    QFont font;
-    font.setFamily(m_fontName);
-    font.setPointSize(m_fontSize);
+    QFont font(m_fontName, m_fontSize);
     font.setBold(m_fontBold);
 
-    QFontDialog dialog(this);
-    dialog.setOption(QFontDialog::MonospacedFonts, true);
+    SettingsDialog dialog(this);
     dialog.setCurrentFont(font);
+    dialog.setCurrentRingTone(m_ringTone);
 
     if (dialog.exec() == QDialog::Accepted) {
-        QFont font = dialog.selectedFont();
+        font = dialog.getSelectedFont();
         m_fontName = font.family();
-        m_fontSize = font.pointSize();
         m_fontBold = font.bold();
+        m_fontSize = font.pointSize();
 
-        font.setFamily(m_fontName);
-        font.setBold(m_fontBold);
         font.setPointSizeF((double)this->size().width()/DIVFACTOR);
         ui->labelTime->setFont(font);
 
+        m_ringTone = dialog.getRingTone();
+        delete m_sound;
+        m_sound = new QSound(m_ringTone);
+
+        QSettings settings;
         settings.setValue(STORE_FONTNAME, m_fontName);
         settings.setValue(STORE_FONTSIZE, m_fontSize);
         settings.setValue(STORE_FONTBOLD, m_fontBold);
+        settings.setValue(STORE_RINGTONE, m_ringTone);
     }
 }
 
@@ -119,6 +124,11 @@ void MainDialog::on_toolAlarms_clicked() {
     dialog.setAlarms(m_Alarms);
     connect(&dialog, SIGNAL(alarmsUpdated()), this, SLOT(slot_updateAlarms()));
     dialog.exec();
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::on_toolMute_clicked() {
+    m_sound->stop();
 }
 
 //-----------------------------------------------------------------------------
@@ -166,12 +176,15 @@ void MainDialog::loadAlarms() {
 //-----------------------------------------------------------------------------
 void MainDialog::processAlarms(QDateTime( &currDateTime)) {
     for (alarm_t alarm: m_Alarms) {
-        if (currDateTime.time().hour() == alarm.hour &&
+        if (alarm.enable &&
+            currDateTime.time().hour() == alarm.hour &&
             currDateTime.time().minute() == alarm.minute &&
             currDateTime.time().second() == 0) {
             if (!alarm.fired) {
                 alarm.fired = true;
-                qDebug() << "*** FIRE ***";
+                if (!m_ringTone.isEmpty()) {
+                    m_sound->play();
+                }
             }
         } else {
             alarm.fired = false;

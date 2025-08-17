@@ -4,5 +4,6 @@
         <file>images/bell.png</file>
         <file>images/add.png</file>
         <file>images/remove.png</file>
+        <file>images/mute.png</file>
     </qresource>
 </RCC>
