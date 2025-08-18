@@ -33,7 +33,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     ui->labelTime->setFont(font);
 
     font.setFamily("Ubuntu");
-    font.setPointSize(40);
+    font.setPointSize(36);
     ui->labelDate->setFont(font);
     ui->labelDayOfWeek->setFont(font);
 

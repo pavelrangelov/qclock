@@ -97,9 +97,12 @@
        <widget class="QToolButton" name="toolMute">
         <property name="minimumSize">
          <size>
-          <width>64</width>
-          <height>64</height>
+          <width>50</width>
+          <height>50</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Stop Ring</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -120,9 +123,12 @@
        <widget class="QToolButton" name="toolAlarms">
         <property name="minimumSize">
          <size>
-          <width>64</width>
-          <height>64</height>
+          <width>50</width>
+          <height>50</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Alarms</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -143,9 +149,12 @@
        <widget class="QToolButton" name="toolSettings">
         <property name="minimumSize">
          <size>
-          <width>64</width>
-          <height>64</height>
+          <width>50</width>
+          <height>50</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Settings</string>
         </property>
         <property name="text">
          <string>...</string>
