@@ -5,6 +5,8 @@
 #include <QFontDialog>
 #include <QSettings>
 #include <QSound>
+#include <QMenu>
+#include <QAction>
 
 #include "maindialog.h"
 #include "ui_maindialog.h"
@@ -18,6 +20,10 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     QSettings settings;
 
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/images/clock.png"));
+
+    restoreGeometry(settings.value(STORE_GEOMETRY).toByteArray());
+    loadAlarms();
 
     m_counter = 0;
 
@@ -25,8 +31,6 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     m_fontSize = settings.value(STORE_FONTSIZE, 20).toInt();
     m_fontBold = settings.value(STORE_FONTBOLD, false).toBool();
     m_ringTone = settings.value(STORE_RINGTONE, "").toString();
-
-    restoreGeometry(settings.value(STORE_GEOMETRY).toByteArray());
 
     QFont font(m_fontName, m_fontSize);
     font.setBold(m_fontBold);
@@ -42,13 +46,13 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     QString sTime = QDateTime::currentDateTime().toString("hh:mm");
     ui->labelTime->setText(sTime);
 
-    loadAlarms();
-
     m_sound = new QSound(m_ringTone);
 
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainDialog::slot_timeout);
     m_timer->start(500);
+
+    createTrayIcon();
 }
 
 //-----------------------------------------------------------------------------
@@ -58,9 +62,22 @@ MainDialog::~MainDialog() {
 
 //-----------------------------------------------------------------------------
 void MainDialog::closeEvent(QCloseEvent *e) {
+    this->hide();
+    e->ignore();
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::slot_exitApplication() {
     QSettings settings;
     settings.setValue(STORE_GEOMETRY, saveGeometry());
-    e->accept();
+    qApp->quit();
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::slot_restoreWindow() {
+    if (this->isHidden()) {
+        this->show();
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -190,4 +207,21 @@ void MainDialog::processAlarms(QDateTime( &currDateTime)) {
             alarm.fired = false;
         }
     }
+}
+
+//-----------------------------------------------------------------------------
+void MainDialog::createTrayIcon() {
+    trayIcon = new QSystemTrayIcon(QIcon(":/images/clock.png"), this);
+    trayIcon->show();
+
+    QMenu *trayIconMenu = new QMenu(this);
+    QAction *showAction = new QAction("Show");
+    QAction *exitAction = new QAction("Exit");
+    trayIconMenu->addAction(showAction);
+    trayIconMenu->addAction(exitAction);
+
+    connect(exitAction, SIGNAL(triggered()), this, SLOT(slot_exitApplication()));
+    connect(showAction, SIGNAL(triggered()), this, SLOT(slot_restoreWindow()));
+
+    trayIcon->setContextMenu(trayIconMenu);
 }

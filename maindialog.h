@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QList>
 #include <QSound>
+#include <QSystemTrayIcon>
 
 #include "alarmsdialog.h"
 
@@ -36,10 +37,12 @@ private:
     QString m_ringTone;
     QList<alarm_t> m_Alarms;
     QSound *m_sound;
+    QSystemTrayIcon *trayIcon;
 
     QString getDayOfWeek(int day);
     void loadAlarms();
     void processAlarms(QDateTime &currDateTime);
+    void createTrayIcon();
 
 private slots:
     void slot_timeout();
@@ -47,6 +50,8 @@ private slots:
     void on_toolAlarms_clicked();
     void on_toolMute_clicked();
     void slot_updateAlarms();
+    void slot_exitApplication();
+    void slot_restoreWindow();
 
 protected:
     virtual void closeEvent(QCloseEvent *e) override;
