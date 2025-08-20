@@ -37,7 +37,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     ui->labelTime->setFont(font);
 
     font.setFamily("Ubuntu");
-    font.setPointSize(36);
+    font.setPointSize(32);
     ui->labelDate->setFont(font);
     ui->labelDayOfWeek->setFont(font);
 
@@ -52,7 +52,7 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MainDialog
     connect(m_timer, &QTimer::timeout, this, &MainDialog::slot_timeout);
     m_timer->start(500);
 
-    createTrayIcon();
+    //createTrayIcon();
 }
 
 //-----------------------------------------------------------------------------
@@ -62,8 +62,11 @@ MainDialog::~MainDialog() {
 
 //-----------------------------------------------------------------------------
 void MainDialog::closeEvent(QCloseEvent *e) {
-    this->hide();
-    e->ignore();
+    //this->hide();
+    //e->ignore();
+    QSettings settings;
+    settings.setValue(STORE_GEOMETRY, saveGeometry());
+    e->accept();
 }
 
 //-----------------------------------------------------------------------------
